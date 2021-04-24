@@ -32,6 +32,9 @@ client.on('guildMemberAdd', member => {
 
 
 client.on("message", (msg) => {
+    answers.getAnswere(msg);
+
+    /*
   if ((!msg.content.startsWith(config.prefix) && msg.content.toLowerCase().includes('ringo')) && !msg.author.bot) {
     const chosenDrink = drinks.serviereDrinkString(msg.content.toLowerCase());
     if (typeof chosenDrink === 'object' && !msg.content.toLowerCase().includes('runde')) {
@@ -142,6 +145,7 @@ client.on("message", (msg) => {
     //  msg.reply(drinkresponse[msg.content.toLowerCase()]);
     //}
   }
+  */
 
 }
 );
