@@ -6,6 +6,7 @@ const config = require("./config.json");
 const drinks = require('./drinks.js');
 const rolls = require("./roll.js")
 const func = require("./functions.js")
+const answers = require("./answers.js")
 const Responses = ["das weiß ich selbst nicht", "ich bin wie ich bin", "du stellst Fragen ...", "komm, trink einfach noch einen", "schön dich zu sehen", "dich bedien ich doch immer gern", "kannst du das präzisieren?", "ach was weiß ich, bestell was, oder lass mich in Ruhe", "ich glaube du hattest für heute genug..."];
 
 
