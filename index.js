@@ -11,12 +11,14 @@ const Responses = ["das weiß ich selbst nicht", "ich bin wie ich bin", "du stel
 
 
 keepAlive();
+const myToken = process.env['sec_Token'];
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.login(config.token);
+//client.login(config.token);
+client.login(myToken);
 
 // Create an event listener for new guild members
 client.on('guildMemberAdd', member => {
