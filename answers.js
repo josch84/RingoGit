@@ -1,143 +1,178 @@
 const config = require("./config.json");
 const drinks = require('./drinks.js');
-const rolls = require("./roll.js")
-const func = require("./functions.js")
-const Responses = ["das weiß ich selbst nicht", "ich bin wie ich bin", "du stellst Fragen ...", "komm, trink einfach noch einen", "schön dich zu sehen", "dich bedien ich doch immer gern", "kannst du das präzisieren?", "ach was weiß ich, bestell was, oder lass mich in Ruhe", "ich glaube du hattest für heute genug..."];
+const rolls = require("./roll.js");
+const func = require("./functions.js");
+const jokes = require("./jokes.js");
+const gossip = require("./gossip.js");
 
 
 module.exports.getAnswere = (msg) =>{
     if ((!msg.content.startsWith(config.prefix) && msg.content.toLowerCase().includes('ringo')) && !msg.author.bot) {
         const chosenDrink = drinks.serviereDrinkString(msg.content.toLowerCase());
+
         if (typeof chosenDrink === 'object' && !msg.content.toLowerCase().includes('runde')) {
-            const randomInt = func.getRandomInt(50);
-            if (randomInt === 0) {
-                msg.reply('ich denke du hattest für heute genug')
-            } else {
-                if (chosenDrink.drinkmessage != '') {
-                    msg.reply(chosenDrink.drinkmessage)
-                } else {
-                    msg.reply(`hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`);
-                }
-            }
+          msg.reply(returnDrink(msg));
+          return;
+        }
+        else if(typeof chosenDrink === 'object' && msg.content.toLowerCase().includes('runde')){
+          msg.reply(returnARound(msg));
+          return;
         }
         else {
-            switch (true) {
-                case msg.content.toLowerCase().includes('wie geht'):
-                    msg.reply('danke der Nachfrage, mir gehts gut, habe ja nette G�ste')
-                    break;
-
-                case msg.content.toLowerCase().includes('gute nacht'):
-                    msg.reply('bis zum nächsten Mal')
-                    break;
-
-                case msg.content.toLowerCase().includes('bye'):
-                    msg.reply('bis zum nächsten Mal')
-                    break;
-
-                case msg.content.toLowerCase().includes('guten morgen'):
-                    msg.channel.send(`Guten Morgen ${msg.author.username}`)
-                    break;
-
-                case msg.content.toLowerCase().includes('runde'):
-                    if (typeof chosenDrink === 'object') {
-                        const randomInt = func.getRandomInt(2);
-                        if (randomInt === 0) {
-                            msg.channel.send(`Alle mal herhören, ${msg.author.username} gibt eine Runde ${chosenDrink.name} aus, Prost!`);
-                        } else {
-                            msg.channel.send(`${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${chosenDrink.name} aus!`);
-                        }
-                    }
-                    break;
-
-                default:
-                    const Response = Math.floor(Math.random() * Responses.length);
-                    msg.reply(`${Responses[Response]}`);
-            }
+          msg.reply(returnSmallTalk(msg));
+          return;
         }
     }
 
     if (msg.content.startsWith(config.prefix) && !msg.author.bot) //return;
     {
-        if (msg.content.toLowerCase() === '!karte') {
-            var allDrink = drinks.Karte();
-            msg.reply(allDrink);
-        }
-
-        if (msg.content.toLowerCase() === '!zufall') {
-            const randomDrink = drinks.getRandomDrink();
-            msg.reply(`hier ein ${randomDrink.name} f�r dich`);
-        }
-
-        if (msg.content.toLowerCase() === '!anschreiben') {
-            msg.reply(`anschreiben? Anschreiben gibts hier nicht, die durchschnittliche Lebenserwartung der Gäste hier ist einfach zu niedrig ...`);
-        }
-
-        if (msg.content.toLowerCase().includes('!roll ')) {
-            const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
-            const command = args.shift().toLowerCase();
-            const rollresult = rolls.rolldice(args[0], args[1]);
-            //const ayy = client.emojis.cache.find(emoji => emoji.name === "D105");
-            //msg.reply(rollresult + `  ${ayy}`);
-            msg.reply(rollresult);
-        }
-
-        if (msg.content.toLowerCase().includes('!runde ')) {
-
-            msg.channel.send(returnARound(msg));
-
-        }
-
-        if (msg.content.startsWith(config.prefix) && !msg.author.bot) {
-            const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
-            const command = args.shift().toLowerCase();
-            const chosenDrink = drinks.serviereDrink(command);
-            if (typeof chosenDrink === 'object') {
-                const randomInt = func.getRandomInt(50);
-                if (randomInt === 0) {
-                    msg.reply('ich denke du hattest för heute genug')
-                } else {
-                    if (chosenDrink.drinkmessage != '') {
-                        msg.reply(chosenDrink.drinkmessage)
-                    } else {
-                        msg.reply(`hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`);
-                    }
-                }
-            }
-        }
-        //if(drinkresponse[msg.content.toLowerCase()]) {
-        //  msg.reply(drinkresponse[msg.content.toLowerCase()]);
-        //}
+        msg.reply(returnSpecialCommands(msg));
+        return;
     }
+
+    console.log('Komme ich dennoch bis zum ende?');
 }
 
-function returnDrink() {
 
-    return drink;
-}
+//function to return a simple drink
+function returnDrink(msg) {
+  const chosenDrink = drinks.serviereDrinkString(msg.content.toLowerCase());
+  const randomInt = func.getRandomInt(50);
 
-function returnJoke() {
-
-    return joke;
-}
-
-function returnARound(msg) {
-
-    const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-    const rundeDrink = drinks.serviereDrink(args[0].toLowerCase());
-
-    if (typeof rundeDrink === 'object') {
-        const randomInt = func.getRandomInt(2);
-        if (randomInt === 0) {
-            return `Alle mal herhören, ${msg.author.username} gibt eine Runde ${args[0]} aus, Prost!`;
+  if (randomInt === 0) {
+    return 'ich denke du hattest für heute genug';
+    } else {
+        if (chosenDrink.drinkmessage != '') {
+            return chosenDrink.drinkmessage;
         } else {
-            return `${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${args[0]} aus!`;
+            return `hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`;
         }
     }
-
-    return round;
 }
 
-function returnSmallTalk() {
-    return smallTalk
+
+//This function returns a perfect joke for Ringo! 
+function returnJoke(msg) {
+
+  /* //Für die Zukunft, falls Ringo witze aus verschiedenen Kategorien auf Lagern haben soll 
+  switch (true){
+    case msg.content.toLowerCase().includes('schlechten'):
+      return jokes.getABadJoke(); 
+  }
+  */
+
+  return jokes.getABadJoke(); 
+}
+
+
+//Function to return a round 
+function returnARound(msg) {
+  const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
+  //Check if arry is empty
+  if (args.length === 0){
+    return 'Eine Runde was? Äpfel? Birnen?';
+  }
+      
+  const rundeDrink = drinks.serviereDrinkString(msg.content.toLowerCase());
+
+  //Extend this array for further answers for a Round! 
+  responsesForRound = [
+    `Alle mal herhören, ${msg.author.username} gibt eine Runde ${rundeDrink.name} aus, Prost!`,
+    `${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${rundeDrink.name} aus!`,
+    `Ohh, muss sich ${msg.author.username} wieder ein paar Freunde kaufen? Mir soll's recht sein. ${rundeDrink.name.toUpperCase()} FÜR ALLE!`
+    ];
+
+  if (typeof rundeDrink === 'object') {
+    return responsesForRound[func.getRandomInt(responsesForRound.length)];
+  }
+}
+
+//function to give Ringo a little bit more personality and to return smalltalk stuff
+function returnSmallTalk(msg) {
+
+  //extend this array for further random answers
+  const ResponsesForSmallTalk = [
+    "das weiß ich selbst nicht",
+    "ich bin wie ich bin",
+    "du stellst Fragen ...",
+    "komm, trink einfach noch einen",
+    "schön dich zu sehen",
+    "dich bedien ich doch immer gern",
+    "kannst du das präzisieren?",
+    "ach was weiß ich, bestell was, oder lass mich in Ruhe",
+    "ich glaube du hattest für heute genug..."
+    ];
+
+    switch (true) {
+      case msg.content.toLowerCase().includes('wie geht'):
+          return 'danke der Nachfrage, mir gehts gut, habe ja nette Gäste';
+
+      case msg.content.toLowerCase().includes('gute nacht'):
+          return `Gute Nacht ${msg.author.username}! Bis zum nächsten Mal`;
+
+      case msg.content.toLowerCase().includes('bye'):
+          return 'bis zum nächsten Mal';
+
+      case msg.content.toLowerCase().includes('guten morgen'):
+          return `Guten Morgen ${msg.author.username}`;
+
+      case msg.content.toLowerCase().includes('klatsch'):
+      case msg.content.toLowerCase().includes('tratsch'):
+      case msg.content.toLowerCase().includes('gossip'):
+      case msg.content.toLowerCase().includes('was gibts neues'):
+      case msg.content.toLowerCase().includes('gerüchte'):
+           return returnGossip(msg);
+
+      case msg.content.toLowerCase().includes('witz') && !msg.content.toLowerCase().includes('witze') :
+          return returnJoke(msg);
+
+      default:
+          const ResponseIdx = Math.floor(Math.random() * ResponsesForSmallTalk.length);
+          return(`${ResponsesForSmallTalk[ResponseIdx]}`);
+    } 
+}
+
+//function for special commands
+function returnSpecialCommands(msg){
+
+  if (msg.content.toLowerCase() === '!karte') {
+    var allDrink = drinks.Karte();
+    return allDrink;
+  }
+
+  if (msg.content.toLowerCase() === '!zufall') {
+    const randomDrink = drinks.getRandomDrink();
+    return `hier ein ${randomDrink.name} für dich`;
+  }
+
+  if (msg.content.toLowerCase() === '!anschreiben') {
+      return `anschreiben? Anschreiben gibts hier nicht, die durchschnittliche Lebenserwartung der Gäste hier ist einfach zu niedrig ...`;
+  }
+
+  if (msg.content.toLowerCase().includes('!roll ')) {
+      const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
+      const command = args.shift().toLowerCase();
+      const rollresult = rolls.rolldice(args[0], args[1]);
+      //const ayy = client.emojis.cache.find(emoji => emoji.name === "D105");
+      //msg.reply(rollresult + `  ${ayy}`);
+      return rollresult;
+  }
+
+  //return 'Sprich mal in ganzen Sätzen mit mir!'
+
+  if (msg.content.toLowerCase().includes('!runde')) {
+    return returnARound(msg);
+  }
+  
+  if (msg.content.startsWith(config.prefix) && !msg.author.bot) {
+    return returnDrink(msg);
+  } 
+}
+
+//tbd
+function returnGossip(msg){
+
+  return gossip.getTrueGossip(msg);
 }

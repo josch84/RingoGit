@@ -1,8 +1,7 @@
-const keepAlive = require("./server")
+const keepAlive = require("./server");
 const Discord = require('discord.js');
 const client = new Discord.Client();
-//const drinkresponse = require("./drinks.json");
-const answers = require("./answers.js")
+const answers = require("./answers.js");
 
 
 keepAlive();
