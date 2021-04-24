@@ -1,30 +1,37 @@
+const config = require("./config.json");
+const drinks = require('./drinks.js');
+const rolls = require("./roll.js")
+const func = require("./functions.js")
+const Responses = ["das weiÃŸ ich selbst nicht", "ich bin wie ich bin", "du stellst Fragen ...", "komm, trink einfach noch einen", "schÃ¶n dich zu sehen", "dich bedien ich doch immer gern", "kannst du das prÃ¤zisieren?", "ach was weiÃŸ ich, bestell was, oder lass mich in Ruhe", "ich glaube du hattest fÃ¼r heute genug..."];
+
+
 module.exports.getAnswere = (msg) =>{
     if ((!msg.content.startsWith(config.prefix) && msg.content.toLowerCase().includes('ringo')) && !msg.author.bot) {
         const chosenDrink = drinks.serviereDrinkString(msg.content.toLowerCase());
         if (typeof chosenDrink === 'object' && !msg.content.toLowerCase().includes('runde')) {
             const randomInt = func.getRandomInt(50);
             if (randomInt === 0) {
-                msg.reply('ich denke du hattest für heute genug')
+                msg.reply('ich denke du hattest fï¿½r heute genug')
             } else {
                 if (chosenDrink.drinkmessage != '') {
                     msg.reply(chosenDrink.drinkmessage)
                 } else {
-                    msg.reply(`hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`);
+                    msg.reply(`hier ein ${chosenDrink.name} fï¿½r dich, macht ${chosenDrink.price}`);
                 }
             }
         }
         else {
             switch (true) {
                 case msg.content.toLowerCase().includes('wie geht'):
-                    msg.reply('danke der Nachfrage, mir gehts gut, habe ja nette Gäste')
+                    msg.reply('danke der Nachfrage, mir gehts gut, habe ja nette Gï¿½ste')
                     break;
 
                 case msg.content.toLowerCase().includes('gute nacht'):
-                    msg.reply('bis zum nächsten Mal')
+                    msg.reply('bis zum nï¿½chsten Mal')
                     break;
 
                 case msg.content.toLowerCase().includes('bye'):
-                    msg.reply('bis zum nächsten Mal')
+                    msg.reply('bis zum nï¿½chsten Mal')
                     break;
 
                 case msg.content.toLowerCase().includes('guten morgen'):
@@ -35,7 +42,7 @@ module.exports.getAnswere = (msg) =>{
                     if (typeof chosenDrink === 'object') {
                         const randomInt = func.getRandomInt(2);
                         if (randomInt === 0) {
-                            msg.channel.send(`Alle mal herhören, ${msg.author.username} gibt eine Runde ${chosenDrink.name} aus, Prost!`);
+                            msg.channel.send(`Alle mal herhï¿½ren, ${msg.author.username} gibt eine Runde ${chosenDrink.name} aus, Prost!`);
                         } else {
                             msg.channel.send(`${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${chosenDrink.name} aus!`);
                         }
@@ -58,11 +65,11 @@ module.exports.getAnswere = (msg) =>{
 
         if (msg.content.toLowerCase() === '!zufall') {
             const randomDrink = drinks.getRandomDrink();
-            msg.reply(`hier ein ${randomDrink.name} für dich`);
+            msg.reply(`hier ein ${randomDrink.name} fï¿½r dich`);
         }
 
         if (msg.content.toLowerCase() === '!anschreiben') {
-            msg.reply(`anschreiben? Anschreiben gibts hier nicht, die durchschnittliche Lebenserwartung der Gäste hier ist einfach zu niedrig ...`);
+            msg.reply(`anschreiben? Anschreiben gibts hier nicht, die durchschnittliche Lebenserwartung der Gï¿½ste hier ist einfach zu niedrig ...`);
         }
 
         if (msg.content.toLowerCase().includes('!roll ')) {
@@ -81,7 +88,7 @@ module.exports.getAnswere = (msg) =>{
             if (typeof rundeDrink === 'object') {
                 const randomInt = func.getRandomInt(2);
                 if (randomInt === 0) {
-                    msg.channel.send(`Alle mal herhören, ${msg.author.username} gibt eine Runde ${args[0]} aus, Prost!`);
+                    msg.channel.send(`Alle mal herhï¿½ren, ${msg.author.username} gibt eine Runde ${args[0]} aus, Prost!`);
                 } else {
                     msg.channel.send(`${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${args[0]} aus!`);
                 }
@@ -95,12 +102,12 @@ module.exports.getAnswere = (msg) =>{
             if (typeof chosenDrink === 'object') {
                 const randomInt = func.getRandomInt(50);
                 if (randomInt === 0) {
-                    msg.reply('ich denke du hattest für heute genug')
+                    msg.reply('ich denke du hattest fï¿½r heute genug')
                 } else {
                     if (chosenDrink.drinkmessage != '') {
                         msg.reply(chosenDrink.drinkmessage)
                     } else {
-                        msg.reply(`hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`);
+                        msg.reply(`hier ein ${chosenDrink.name} fï¿½r dich, macht ${chosenDrink.price}`);
                     }
                 }
             }
