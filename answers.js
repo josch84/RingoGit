@@ -11,12 +11,12 @@ module.exports.getAnswere = (msg) =>{
         if (typeof chosenDrink === 'object' && !msg.content.toLowerCase().includes('runde')) {
             const randomInt = func.getRandomInt(50);
             if (randomInt === 0) {
-                msg.reply('ich denke du hattest f�r heute genug')
+                msg.reply('ich denke du hattest für heute genug')
             } else {
                 if (chosenDrink.drinkmessage != '') {
                     msg.reply(chosenDrink.drinkmessage)
                 } else {
-                    msg.reply(`hier ein ${chosenDrink.name} f�r dich, macht ${chosenDrink.price}`);
+                    msg.reply(`hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`);
                 }
             }
         }
@@ -27,11 +27,11 @@ module.exports.getAnswere = (msg) =>{
                     break;
 
                 case msg.content.toLowerCase().includes('gute nacht'):
-                    msg.reply('bis zum n�chsten Mal')
+                    msg.reply('bis zum nächsten Mal')
                     break;
 
                 case msg.content.toLowerCase().includes('bye'):
-                    msg.reply('bis zum n�chsten Mal')
+                    msg.reply('bis zum nächsten Mal')
                     break;
 
                 case msg.content.toLowerCase().includes('guten morgen'):
@@ -42,7 +42,7 @@ module.exports.getAnswere = (msg) =>{
                     if (typeof chosenDrink === 'object') {
                         const randomInt = func.getRandomInt(2);
                         if (randomInt === 0) {
-                            msg.channel.send(`Alle mal herh�ren, ${msg.author.username} gibt eine Runde ${chosenDrink.name} aus, Prost!`);
+                            msg.channel.send(`Alle mal herhören, ${msg.author.username} gibt eine Runde ${chosenDrink.name} aus, Prost!`);
                         } else {
                             msg.channel.send(`${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${chosenDrink.name} aus!`);
                         }
@@ -69,7 +69,7 @@ module.exports.getAnswere = (msg) =>{
         }
 
         if (msg.content.toLowerCase() === '!anschreiben') {
-            msg.reply(`anschreiben? Anschreiben gibts hier nicht, die durchschnittliche Lebenserwartung der G�ste hier ist einfach zu niedrig ...`);
+            msg.reply(`anschreiben? Anschreiben gibts hier nicht, die durchschnittliche Lebenserwartung der Gäste hier ist einfach zu niedrig ...`);
         }
 
         if (msg.content.toLowerCase().includes('!roll ')) {
@@ -82,17 +82,9 @@ module.exports.getAnswere = (msg) =>{
         }
 
         if (msg.content.toLowerCase().includes('!runde ')) {
-            const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
-            const command = args.shift().toLowerCase();
-            const rundeDrink = drinks.serviereDrink(args[0].toLowerCase());
-            if (typeof rundeDrink === 'object') {
-                const randomInt = func.getRandomInt(2);
-                if (randomInt === 0) {
-                    msg.channel.send(`Alle mal herh�ren, ${msg.author.username} gibt eine Runde ${args[0]} aus, Prost!`);
-                } else {
-                    msg.channel.send(`${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${args[0]} aus!`);
-                }
-            }
+
+            msg.channel.send(returnARound(msg));
+
         }
 
         if (msg.content.startsWith(config.prefix) && !msg.author.bot) {
@@ -102,12 +94,12 @@ module.exports.getAnswere = (msg) =>{
             if (typeof chosenDrink === 'object') {
                 const randomInt = func.getRandomInt(50);
                 if (randomInt === 0) {
-                    msg.reply('ich denke du hattest f�r heute genug')
+                    msg.reply('ich denke du hattest för heute genug')
                 } else {
                     if (chosenDrink.drinkmessage != '') {
                         msg.reply(chosenDrink.drinkmessage)
                     } else {
-                        msg.reply(`hier ein ${chosenDrink.name} f�r dich, macht ${chosenDrink.price}`);
+                        msg.reply(`hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`);
                     }
                 }
             }
@@ -116,4 +108,36 @@ module.exports.getAnswere = (msg) =>{
         //  msg.reply(drinkresponse[msg.content.toLowerCase()]);
         //}
     }
+}
+
+function returnDrink() {
+
+    return drink;
+}
+
+function returnJoke() {
+
+    return joke;
+}
+
+function returnARound(msg) {
+
+    const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+    const rundeDrink = drinks.serviereDrink(args[0].toLowerCase());
+
+    if (typeof rundeDrink === 'object') {
+        const randomInt = func.getRandomInt(2);
+        if (randomInt === 0) {
+            return `Alle mal herhören, ${msg.author.username} gibt eine Runde ${args[0]} aus, Prost!`;
+        } else {
+            return `${msg.author.username} hat heute wohl die Spendierhosen an und gibt jedem einen ${args[0]} aus!`;
+        }
+    }
+
+    return round;
+}
+
+function returnSmallTalk() {
+    return smallTalk
 }
