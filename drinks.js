@@ -8,7 +8,7 @@ class Drink {
 
 var allDrinks = []
 
-allDrinks.push(new Drink('Wasser', '2 Credit', ''));
+allDrinks.push(new Drink('Wasser', '2 Credits', 'Die Toiletten sind hinten links. Nein Spaß! Hier dein Wasser. Macht 2 Credits'));
 allDrinks.push(new Drink('Spezi', '3 Credits', ''));
 allDrinks.push(new Drink('Cola', '3 Credits', ''));
 allDrinks.push(new Drink('Limo', '3 Credits', ''));

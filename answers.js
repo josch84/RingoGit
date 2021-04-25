@@ -14,7 +14,7 @@ module.exports.getAnswere = (msg) =>{
           msg.reply(returnDrink(msg));
           return;
         }
-        else if(typeof chosenDrink === 'object' && msg.content.toLowerCase().includes('runde')){
+        else if(/*typeof chosenDrink === 'object' && */msg.content.toLowerCase().includes('runde')){
           msg.reply(returnARound(msg));
           return;
         }
@@ -26,7 +26,12 @@ module.exports.getAnswere = (msg) =>{
 
     if (msg.content.startsWith(config.prefix) && !msg.author.bot) //return;
     {
-        msg.reply(returnSpecialCommands(msg));
+        const returnmsg = returnSpecialCommands(msg)
+        if (typeof returnmsg != "undefined" && returnmsg != ""){
+          msg.reply(returnmsg)
+        }
+        
+        //msg.reply(returnSpecialCommands(msg));
         return;
     }
 
@@ -45,7 +50,7 @@ function returnDrink(msg) {
         if (chosenDrink.drinkmessage != '') {
             return chosenDrink.drinkmessage;
         } else {
-            return `hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`;
+            return `Hier ein ${chosenDrink.name} für dich, macht ${chosenDrink.price}`;
         }
     }
 }
@@ -67,8 +72,12 @@ function returnJoke(msg) {
 
 //Function to return a round 
 function returnARound(msg) {
+  console.log("returnARound");
+
   const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+
+  console.log(args.length);
 
   //Check if arry is empty
   if (args.length === 0){
@@ -76,6 +85,10 @@ function returnARound(msg) {
   }
       
   const rundeDrink = drinks.serviereDrinkString(msg.content.toLowerCase());
+
+  if(typeof rundeDrink != 'object'){
+    return 'Eine Runde was? Äpfel? Birnen?';
+  }
 
   //Extend this array for further answers for a Round! 
   responsesForRound = [
@@ -88,6 +101,7 @@ function returnARound(msg) {
     return responsesForRound[func.getRandomInt(responsesForRound.length)];
   }
 }
+
 
 //function to give Ringo a little bit more personality and to return smalltalk stuff
 function returnSmallTalk(msg) {
@@ -166,12 +180,23 @@ function returnSpecialCommands(msg){
     return returnARound(msg);
   }
   
+  if (msg.content.toLowerCase().includes('!hilfe')) {
+    msg.author.send(`Hallo ${msg.author.username}, ich bin Ringo, der Barkeeper hier im Come In. 
+    Wenn du etwas trinken möchtest, sprich mich einfach mit meinem Namen an, und sag was du gerne hättest. 
+    Am besten schaust du dir vorher mit dem Befehle !karte an, was es alles gibt. Du kannst dich auch mit !zufall überraschen lassen, oder eine Runde ausgeben. 
+    Ach, du denkst drüber nach, die Getränke anschreiben zu lassen? Na versuchs mal.
+    Außerdem kannst du auch einfach so mit mir sprechen. Je nachdem was du wissen möchtest, kann ich dir ein 
+    paar Witze oder auch Gerüchte über das Come In, seine Gäste und die Gegend hier erzählen.
+    Mehr Infos findest du auch bei den Regeln.`);
+    return ''
+  }
+
   if (msg.content.startsWith(config.prefix) && !msg.author.bot) {
     return returnDrink(msg);
   } 
 }
 
-//tbd
+//returns a gossip answer from the according library
 function returnGossip(msg){
 
   return gossip.getTrueGossip(msg);

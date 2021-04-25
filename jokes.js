@@ -1,4 +1,5 @@
 const ListOfBadJokes = [
+  "Du bist hier der größte Witz!",
   "Was ist schwarz-weiß und sitzt auf der Schaukel? – Ein Schwinguin.",
   "Wie nennt man ein helles Mammut? – Hellmut.",
   "Was ist flüssiger als Wasser? – Hausaufgaben, die sind überflüssig.",
@@ -49,10 +50,5 @@ module.exports.getABadJoke = () =>{
 
   const ResponseIdx = Math.floor(Math.random() * ListOfBadJokes.length);
 
-  if(ResponseIdx === 0){
-    return "Du bist hier der größte Witz!";
-  }
-  else{
-    return(`${ListOfBadJokes[ResponseIdx]}`);
-  }  
+  return(`${ListOfBadJokes[ResponseIdx]}`);
 }

@@ -12,15 +12,15 @@ const ListOfGossipEnd = [
   ' mit Freunden Pen&Paper spielt. Wasn Nerd!',
   ' immer die Gratis-Erdnüsse aufm Tresen isst',
   ' das Rezept für Brainstorm erfunden hat. Blödes Geschwätz!',
-  ' 5 Braunstorms auf Ex getrunken hat. Wers glaubt...',
+  ' 5 Brainstorms auf Ex getrunken hat. Wers glaubt...',
   ' gerne mal die Glatze von Herrn Walter polieren möchte.',
   ' meine Programmierer die besten Menschen der Welt sind',
   ' gestern große Schwarze Müllsäcke weggeworfen haben soll',
   ' behauptet, die Antwort auf alles sei 42. Sehr weise!',
   ' sich neue Augen beim Ripperdoc einbauen lassen hat!',
   ' hat sich das Gesicht beim Ripperdoc auffrischen lassen. War bitter nötig, wenn du mich fragst.',
-  ' soll letztens bei Untergrundkämpfen den ersten Platz belegt haben',
-  ' soll letztens von ein paar Straßenkindern ausgeraubt worden sein. Pah, Amateur!',
+  ' letztens bei Untergrundkämpfen den ersten Platz belegt haben soll',
+  ' letztens von ein paar Straßenkindern ausgeraubt worden sein soll. Pah, Amateur!',
   ' immer noch im trüben fischt...'
 ];
 
@@ -39,12 +39,6 @@ const ListOfCommonGossip = [
 
 module.exports.getTrueGossip = (msg) =>{
 
-/*
-  const list = client.guilds.members();
-
-  list.members.cache.forEach(member => console.log(member.user.username)); 
-*/
-
   typeOfGossip = func.getRandomInt(2);
 
   switch(typeOfGossip)
@@ -54,10 +48,9 @@ module.exports.getTrueGossip = (msg) =>{
       const StartIdx = Math.floor(Math.random() * ListOfGossipStart.length);
       const EndIdx = Math.floor(Math.random() * ListOfGossipEnd.length);
 
-      //auslesen von irgendeinem Usernamen auf dem Server. 
+      let randomUser= msg.guild.members.cache.filter((member) => !member.user.bot).random().user;
 
-      return (`${ListOfGossipStart[StartIdx]} USERNAME ${ListOfGossipEnd[EndIdx]}`);
-      break;
+      return (`${ListOfGossipStart[StartIdx]} ${randomUser} ${ListOfGossipEnd[EndIdx]}`);
     }
     
     case 1:
